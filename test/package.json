@@ -1,0 +1,167 @@
+{
+    "name": "samco-agent",
+    "displayName": "SAMCO Agent - Stock Analysis & Market Context",
+    "description": "AI-powered stock market analysis and trading insights agent for VS Code",
+    "version": "0.1.0",
+    "publisher": "samco",
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "categories": [
+        "AI",
+        "Data Science",
+        "Other"
+    ],
+    "keywords": [
+        "stock",
+        "trading",
+        "finance",
+        "market analysis",
+        "AI agent",
+        "copilot"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "samco.chat",
+                "title": "SAMCO: Open Chat",
+                "icon": "$(comment-discussion)"
+            },
+            {
+                "command": "samco.analyzeStock",
+                "title": "SAMCO: Analyze Stock",
+                "icon": "$(graph)"
+            },
+            {
+                "command": "samco.loadSkill",
+                "title": "SAMCO: Load Skill"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "samco.chat",
+                    "when": "view == samco.analysisView",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "samco-sidebar",
+                    "title": "SAMCO Analysis",
+                    "icon": "$(graph)"
+                }
+            ]
+        },
+        "views": {
+            "samco-sidebar": [
+                {
+                    "id": "samco.chatView",
+                    "name": "Chat",
+                    "type": "webview"
+                },
+                {
+                    "id": "samco.analysisView",
+                    "name": "Market Analysis"
+                },
+                {
+                    "id": "samco.portfolioView",
+                    "name": "Portfolio Insights"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "SAMCO Agent",
+            "properties": {
+                "samco.openaiApiKey": {
+                    "type": "string",
+                    "default": "",
+                    "description": "OpenAI API Key for SAMCO agent inference",
+                    "markdownDescription": "Your OpenAI API key. Get one from https://platform.openai.com/api-keys"
+                },
+                "samco.model": {
+                    "type": "string",
+                    "default": "gpt-4-turbo-preview",
+                    "enum": [
+                        "gpt-4-turbo-preview",
+                        "gpt-4",
+                        "gpt-3.5-turbo"
+                    ],
+                    "description": "OpenAI model to use for inference"
+                },
+                "samco.defaultDataSource": {
+                    "type": "string",
+                    "default": "yfinance",
+                    "enum": [
+                        "yfinance",
+                        "alphavantage",
+                        "polygon"
+                    ],
+                    "description": "Default data source for stock market data"
+                },
+                "samco.enableBackgroundAnalysis": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable background analysis tasks"
+                },
+                "samco.maxConcurrentJobs": {
+                    "type": "number",
+                    "default": 3,
+                    "description": "Maximum number of concurrent background jobs"
+                }
+            }
+        },
+        "chatParticipants": [
+            {
+                "id": "samco.agent",
+                "name": "samco",
+                "description": "Stock Analysis and Market Context Observer - Your AI trading assistant",
+                "isSticky": true,
+                "commands": [
+                    {
+                        "name": "samco",
+                        "description": "Analyze stocks, create trading strategies, and get market insights"
+                    },
+                    {
+                        "name": "analyze",
+                        "description": "Perform detailed stock analysis"
+                    },
+                    {
+                        "name": "strategy",
+                        "description": "Create or analyze trading strategies"
+                    },
+                    {
+                        "name": "portfolio",
+                        "description": "Analyze and optimize portfolio"
+                    }
+                ]
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.85.0",
+        "@types/node": "^20.x",
+        "@typescript-eslint/eslint-plugin": "^6.13.0",
+        "@typescript-eslint/parser": "^6.13.0",
+        "eslint": "^8.54.0",
+        "typescript": "^5.3.2"
+    },
+    "dependencies": {
+        "openai": "^4.20.0",
+        "axios": "^1.6.2"
+    }
+}
