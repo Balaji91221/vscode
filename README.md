@@ -1,6 +1,14 @@
 # AI Code Assistant
 
-A comprehensive AI-powered code assistant extension for Visual Studio Code, featuring chat integration, custom views, background task processing, and context-aware code analysis.
+**Bring code questions, editor context, and analysis views into the same VS Code workspace.**
+
+A TypeScript extension that connects VS Code chat and model APIs with the active editor. It is useful for exploring chat participants, streamed model responses, webviews, and cancellable background work.
+
+[Install from source](#-installation) · [Usage](#-usage) · [Architecture guide](ARCHITECTURE.md) · [Quick start](QUICK_START.md)
+
+## Why this project exists
+
+Switching between an editor and a separate chat window loses the context of the code being discussed. This extension passes the selected code or active document into explanation, refactoring, and debugging prompts, then brings the response back into the editor.
 
 ## 🚀 Features
 
@@ -32,7 +40,7 @@ A comprehensive AI-powered code assistant extension for Visual Studio Code, feat
 - Cancellable operations
 - Task queue management
 
-### 4. **Code Analysis Engine**
+### 4. **Code Analysis Prototype**
 - Pattern detection
 - Code insights generation
 - Language-specific analysis
@@ -102,6 +110,20 @@ You can configure the extension to use the OpenAI API for chat inference. Set yo
 | `AI Assistant: Chat Inference` | Run inference and open Chat view (Copilot-like) |
 | `AI Assistant: Move View to Secondary Sidebar` | Attempt to move the AI Assistant view to the secondary sidebar |
 | `AI Assistant: Clear Context` | Clear analysis history |
+
+## Request flow
+
+```mermaid
+flowchart LR
+    E[Active editor or selection] --> H[Chat participant]
+    H --> M[VS Code language model]
+    M --> R[Streamed response]
+    E --> B[Background task manager]
+    B --> A[Code analyzer]
+    A --> V[Suggestions and context views]
+```
+
+The chat integration uses a model exposed through VS Code; a separate OpenAI integration is configurable. The local analyzer includes simulated analysis stages and pattern-based insights, so its sidebar output should not be treated as a complete static-analysis or language-server implementation.
 
 ## 🏗️ Architecture
 
@@ -183,7 +205,7 @@ Contributions are welcome! Please follow these steps:
 
 ## 📝 License
 
-MIT License
+The original project documentation states MIT. A standalone license file is not included in the current repository.
 
 ## 🐛 Known Issues
 
@@ -191,16 +213,16 @@ MIT License
 - Some features are placeholder implementations for demonstration
 - LSP integration is not yet fully implemented
 
-## 🔮 Future Enhancements
+## Possible extensions
 
-- [ ] Full Language Server Protocol integration
-- [ ] Real-time code completion
-- [ ] Multi-file context analysis
-- [ ] Custom model integration
-- [ ] Persistent suggestion history
-- [ ] User preference settings
-- [ ] Telemetry and analytics
-- [ ] Extension marketplace publishing
+- Full Language Server Protocol integration
+- Real-time code completion
+- Multi-file context analysis
+- Custom model integration
+- Persistent suggestion history
+- User preference settings
+- Telemetry and analytics
+- Extension marketplace publishing
 
 ## 💡 Tips
 
